@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Upload, Monitor, Smartphone, X, Plus, Image, Trash2, Link } from 'lucide-react';
+import { getAuthToken } from '../../lib/auth';
 
 interface Banner {
   _id: string;
@@ -123,7 +124,7 @@ function HeroSection() {
 
     try {
       setLoading(true);
-      const token = localStorage.getItem('adminToken');
+      const token = getAuthToken();
       const response = await fetch('https://api.vidyavani.com/api/upload-hero-banner', {
         method: 'POST',
         headers: {
@@ -167,7 +168,7 @@ function HeroSection() {
 
     try {
       setDeleteLoading(true);
-      const token = localStorage.getItem('adminToken');
+      const token = getAuthToken();
       const response = await fetch('https://api.vidyavani.com/api/delete-hero-banner', {
         method: 'POST',
         headers: {

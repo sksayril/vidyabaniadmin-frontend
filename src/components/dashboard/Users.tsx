@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Users, Search, Filter, Eye, Mail, Phone, Calendar, CreditCard, ArrowLeft, ArrowRight, ChevronDown, User, Clock, CheckCircle, XCircle } from 'lucide-react';
+import { getAuthToken } from '../../lib/auth';
 import {
   Dialog,
   DialogContent,
@@ -72,7 +73,7 @@ function UsersManagement() {
   const [userDetails, setUserDetails] = useState<User | null>(null);
   const [loadingUserDetails, setLoadingUserDetails] = useState(false);
 
-  const token = localStorage.getItem('adminToken');
+  const token = getAuthToken();
   const apiBaseUrl = 'https://api.vidyavani.com/api';
 
   const fetchUsers = async (page: number = 1, search: string = '', subscription: string = 'all') => {

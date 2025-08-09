@@ -1,10 +1,11 @@
 import { DashboardOverview, RevenueAnalytics, UserAnalytics, SubscriptionAnalytics } from './types';
+import { getAuthToken, logout } from './auth';
 
 const API_BASE_URL = 'https://api.vidyavani.com/api';
 
 class ApiService {
   private async request<T>(endpoint: string, options?: RequestInit): Promise<T> {
-    const token = localStorage.getItem('adminToken');
+    const token = getAuthToken();
     const headers: HeadersInit = {
       'Content-Type': 'application/json',
       ...(token && { Authorization: `Bearer ${token}` }),
@@ -16,6 +17,12 @@ class ApiService {
         ...options,
         headers,
       });
+
+      if (response.status === 401) {
+        // Token is invalid or expired, logout user
+        logout();
+        throw new Error('Authentication failed. Please login again.');
+      }
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);

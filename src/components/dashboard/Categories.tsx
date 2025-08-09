@@ -11,6 +11,7 @@ import {
   DialogDescription,
 } from '../ui/dialog';
 import { ListSkeleton, LoadingWithText } from '../ui/SkeletonLoader';
+import { getAuthToken } from '../../lib/auth';
 
 interface Category {
   _id: string;
@@ -279,7 +280,7 @@ function Categories() {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [searchTerm, setSearchTerm] = useState('');
 
-  const token = localStorage.getItem('adminToken');
+  const token = getAuthToken();
   const apiBaseUrl = 'https://api.vidyavani.com/api';
 
   const { getRootProps, getInputProps } = useDropzone({

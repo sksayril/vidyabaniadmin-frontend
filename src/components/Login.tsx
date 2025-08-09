@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Lock, User, Shield, Eye, EyeOff, Sparkles, BookOpen, GraduationCap } from 'lucide-react';
+import { setAuthToken } from '../lib/auth';
 
 interface LoginProps {
   onLogin: (token: string) => void;
@@ -29,7 +30,7 @@ function Login({ onLogin }: LoginProps) {
       const data = await response.json();
 
       if (response.ok) {
-        localStorage.setItem('adminToken', data.token);
+        setAuthToken(data.token);
         onLogin(data.token);
       } else {
         setError(data.message || 'Login failed');

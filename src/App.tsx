@@ -2,26 +2,50 @@ import React, { useState, useEffect } from 'react';
 import { Menu, X, LayoutDashboard, ListPlus, Image, Bell, LogOut, Sparkle, BarChart3, Users } from 'lucide-react';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
+import LogoutDialog from './components/ui/LogoutDialog';
+import { isAuthenticated, logout, checkTokenExpiration } from './lib/auth';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [activeSection, setActiveSection] = useState('dashboard');
+  const [showLogoutDialog, setShowLogoutDialog] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem('adminToken');
-    if (token) {
+    // Check if user is authenticated
+    if (isAuthenticated()) {
+      // Check if token is expired
+      if (checkTokenExpiration()) {
+        return; // logout() will handle the redirect
+      }
       setIsLoggedIn(true);
     }
   }, []);
+
+  // Periodic token expiration check (every 5 minutes)
+  useEffect(() => {
+    if (isLoggedIn) {
+      const interval = setInterval(() => {
+        if (checkTokenExpiration()) {
+          // Token expired, user will be logged out automatically
+          return;
+        }
+      }, 5 * 60 * 1000); // Check every 5 minutes
+
+      return () => clearInterval(interval);
+    }
+  }, [isLoggedIn]);
 
   const handleLogin = (token: string) => {
     setIsLoggedIn(true);
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('adminToken');
-    setIsLoggedIn(false);
+    setShowLogoutDialog(true);
+  };
+
+  const confirmLogout = () => {
+    logout(); // This will clear localStorage and redirect
   };
 
   if (!isLoggedIn) {
@@ -55,7 +79,7 @@ function App() {
           <div className="absolute bottom-1/4 left-0 w-24 h-24 bg-blue-300/10 rounded-full blur-2xl"></div>
         </div>
 
-        <div className="relative z-10">
+        <div className="relative z-10 flex flex-col h-full">
           {/* Header */}
           <div className="p-6 flex justify-between items-center border-b border-blue-600/30 bg-gradient-to-r from-blue-800/50 to-sky-700/50 backdrop-blur-sm">
             <div className={`${!isSidebarOpen && 'hidden'}`}>
@@ -74,8 +98,8 @@ function App() {
             </button>
           </div>
 
-          {/* Navigation */}
-          <nav className="mt-6 px-3">
+          {/* Navigation - Flex grow to take available space */}
+          <nav className="flex-1 mt-6 px-3 overflow-y-auto">
             {sidebarItems.map((item) => (
               <button
                 key={item.id}
@@ -96,9 +120,11 @@ function App() {
                 )}
               </button>
             ))}
-            
-            {/* Logout Button */}
-            <div className="mt-8 pt-4 border-t border-blue-600/30">
+          </nav>
+
+          {/* Logout Button - Fixed at bottom above footer */}
+          <div className="px-3 pb-4">
+            <div className="pt-4 border-t border-blue-600/30">
               <button
                 onClick={handleLogout}
                 className="w-full flex items-center p-4 rounded-xl hover:bg-red-600/20 text-red-300 transition-all duration-200 hover:scale-105 hover:shadow-lg"
@@ -109,11 +135,11 @@ function App() {
                 {isSidebarOpen && <span className="ml-4 font-medium">Logout</span>}
               </button>
             </div>
-          </nav>
+          </div>
 
-          {/* Footer Branding */}
+          {/* Footer Branding - Fixed at very bottom */}
           {isSidebarOpen && (
-            <div className="absolute bottom-4 left-4 right-4">
+            <div className="px-3 pb-4">
               <div className="bg-gradient-to-r from-blue-800/50 to-sky-700/50 backdrop-blur-sm rounded-lg p-3 border border-blue-600/30">
                 <p className="text-xs text-center text-sky-300/80 font-medium">
                   © 2024 Cripcocode Technologies Pvt Ltd
@@ -131,6 +157,13 @@ function App() {
       <div className="flex-1 overflow-auto">
         <Dashboard activeSection={activeSection} />
       </div>
+      
+      {/* Logout Confirmation Dialog */}
+      <LogoutDialog
+        isOpen={showLogoutDialog}
+        onClose={() => setShowLogoutDialog(false)}
+        onConfirm={confirmLogout}
+      />
     </div>
   );
 }
