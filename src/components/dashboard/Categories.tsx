@@ -280,7 +280,7 @@ function Categories() {
   const [searchTerm, setSearchTerm] = useState('');
 
   const token = localStorage.getItem('adminToken');
-  const apiBaseUrl = 'https://api.adhyan.guru/api';
+  const apiBaseUrl = 'https://api.vidyavani.com/api';
 
   const { getRootProps, getInputProps } = useDropzone({
     accept: contentType === 'image' 

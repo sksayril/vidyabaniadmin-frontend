@@ -73,7 +73,7 @@ function UsersManagement() {
   const [loadingUserDetails, setLoadingUserDetails] = useState(false);
 
   const token = localStorage.getItem('adminToken');
-  const apiBaseUrl = 'https://api.adhyan.guru/api';
+  const apiBaseUrl = 'https://api.vidyavani.com/api';
 
   const fetchUsers = async (page: number = 1, search: string = '', subscription: string = 'all') => {
     try {

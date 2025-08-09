@@ -37,7 +37,7 @@ function LatestUpdates() {
     const fetchUpdates = async () => {
       try {
         setLoading(true);
-        const response = await fetch('https://api.adhyan.guru/api/latest-updates');
+        const response = await fetch('https://api.vidyavani.com/api/latest-updates');
         if (!response.ok) {
           throw new Error('Failed to fetch updates');
         }
@@ -181,13 +181,13 @@ Make sure the output is clear, engaging, and suitable for a general blog audienc
       let response;
       if (isEditing && editingId) {
         data.append('id', editingId);
-        response = await fetch('https://api.adhyan.guru/api/latest/upload-update', {
+        response = await fetch('https://api.vidyavani.com/api/latest/upload-update', {
           method: 'POST',
           body: data
         });
       } else {
         // Otherwise use create endpoint
-        response = await fetch('https://api.adhyan.guru/api/latest/upload-update', {
+        response = await fetch('https://api.vidyavani.com/api/latest/upload-update', {
           method: 'POST',
           body: data
         });
@@ -213,7 +213,7 @@ Make sure the output is clear, engaging, and suitable for a general blog audienc
       setSuccessMessage(`Update ${isEditing ? 'edited' : 'added'} successfully!`);
       
       // Refresh the updates list
-      const updatedResponse = await fetch('https://api.adhyan.guru/api/latest-updates');
+      const updatedResponse = await fetch('https://api.vidyavani.com/api/latest-updates');
       const result = await updatedResponse.json();
       setUpdates(result.data || []);
       
@@ -236,7 +236,7 @@ Make sure the output is clear, engaging, and suitable for a general blog audienc
     setError(null);
     
     try {
-      const response = await fetch('https://api.adhyan.guru/api/latest/update-isTop', {
+      const response = await fetch('https://api.vidyavani.com/api/latest/update-isTop', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -278,7 +278,7 @@ Make sure the output is clear, engaging, and suitable for a general blog audienc
     setError(null);
     
     try {
-      const response = await fetch('https://api.adhyan.guru/api/latest/delete-update', {
+      const response = await fetch('https://api.vidyavani.com/api/latest/delete-update', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -353,7 +353,7 @@ Make sure the output is clear, engaging, and suitable for a general blog audienc
     setError(null);
     
     try {
-      const response = await fetch('https://api.adhyan.guru/api/latest/update-content', {
+      const response = await fetch('https://api.vidyavani.com/api/latest/update-content', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

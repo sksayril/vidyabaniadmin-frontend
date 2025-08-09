@@ -1,6 +1,6 @@
 import { DashboardOverview, RevenueAnalytics, UserAnalytics, SubscriptionAnalytics } from './types';
 
-const API_BASE_URL = 'https://api.adhyan.guru/api';
+const API_BASE_URL = 'https://api.vidyavani.com/api';
 
 class ApiService {
   private async request<T>(endpoint: string, options?: RequestInit): Promise<T> {

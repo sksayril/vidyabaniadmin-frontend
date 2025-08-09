@@ -124,7 +124,7 @@ npm run dev
 ### Environment Setup
 Create a `.env` file in the root directory:
 ```env
-VITE_API_BASE_URL=https://api.adhyan.guru/api
+VITE_API_BASE_URL=https://api.vidyavani.com/api
 VITE_APP_NAME=Vidyabani Admin
 ```
 
@@ -132,7 +132,7 @@ VITE_APP_NAME=Vidyabani Admin
 
 ### API Configuration
 The API service is configured in `src/lib/api.ts`:
-- Base URL: `https://api.adhyan.guru/api`
+- Base URL: `https://api.vidyavani.com/api`
 - Authentication: Bearer token from localStorage
 - Error handling: Centralized error management
 
